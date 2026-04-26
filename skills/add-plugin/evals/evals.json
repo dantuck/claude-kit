@@ -1,0 +1,89 @@
+{
+  "skill_name": "add-plugin",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "I want to create a new plugin called 'git-summary' that generates a summary of recent git activity when I ask for one.",
+      "expected_output": "Should walk through the full scaffolding steps: create directory structure, write plugin.json, write SKILL.md at both paths, write evals.json, update marketplace.json, validate, and install.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "mentions_plugin_json",
+          "description": "References plugin.json creation",
+          "type": "contains",
+          "value": "plugin.json"
+        },
+        {
+          "id": "mentions_skill_md",
+          "description": "References SKILL.md creation",
+          "type": "contains",
+          "value": "SKILL.md"
+        },
+        {
+          "id": "mentions_marketplace_update",
+          "description": "References updating marketplace.json",
+          "type": "contains_any",
+          "values": ["marketplace.json", "marketplace"]
+        },
+        {
+          "id": "mentions_validate",
+          "description": "References validation step",
+          "type": "contains",
+          "value": "validate"
+        },
+        {
+          "id": "mentions_both_skill_paths",
+          "description": "Mentions that SKILL.md goes in both locations",
+          "type": "contains_any",
+          "values": ["both", "two locations", "standalone", "skills/git-summary/SKILL.md"]
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "Add a plugin to the marketplace for enforcing TypeScript strict mode in all files.",
+      "expected_output": "Should gather name/description/category, then scaffold. Should use a sensible plugin name like 'typescript-strict'. Should set user-invocable: false since it activates automatically.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "creates_directory_structure",
+          "description": "Creates the plugin directory under skills/",
+          "type": "regex",
+          "pattern": "skills/[a-z\\-]+"
+        },
+        {
+          "id": "includes_category",
+          "description": "Assigns a category to the marketplace entry",
+          "type": "contains_any",
+          "values": ["productivity", "development", "security"]
+        },
+        {
+          "id": "runs_validate_command",
+          "description": "Runs claude plugin validate",
+          "type": "contains",
+          "value": "claude plugin validate"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Create a plugin called 'MY PLUGIN' with description 'does stuff'.",
+      "expected_output": "Should push back on the vague description and non-conforming name before proceeding. Should suggest a lowercase hyphenated name and a more specific description.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "flags_name_convention",
+          "description": "Notes the name should be lowercase and hyphenated",
+          "type": "contains_any",
+          "values": ["lowercase", "hyphen", "my-plugin", "kebab"]
+        },
+        {
+          "id": "flags_vague_description",
+          "description": "Flags that the description is too vague",
+          "type": "contains_any",
+          "values": ["specific", "vague", "description", "what it does", "when"]
+        }
+      ]
+    }
+  ]
+}

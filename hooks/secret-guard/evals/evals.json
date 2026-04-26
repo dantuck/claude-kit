@@ -1,0 +1,66 @@
+[
+  {
+    "description": "Blocks bash command reading a .env file",
+    "input": {
+      "tool_name": "Bash",
+      "tool_input": { "command": "cat .env" }
+    },
+    "assertions": [
+      { "type": "contains", "value": "secret-guard" },
+      { "type": "contains", "value": "Blocked" }
+    ]
+  },
+  {
+    "description": "Blocks Read tool on AWS credentials file",
+    "input": {
+      "tool_name": "Read",
+      "tool_input": { "file_path": "/home/user/.aws/credentials" }
+    },
+    "assertions": [
+      { "type": "contains", "value": "secret-guard" },
+      { "type": "contains", "value": "Blocked" }
+    ]
+  },
+  {
+    "description": "Blocks env dump command",
+    "input": {
+      "tool_name": "Bash",
+      "tool_input": { "command": "env" }
+    },
+    "assertions": [
+      { "type": "contains", "value": "secret-guard" },
+      { "type": "contains", "value": "Blocked" }
+    ]
+  },
+  {
+    "description": "Warns when writing to a .env file",
+    "input": {
+      "tool_name": "Write",
+      "tool_input": { "file_path": ".env.local", "content": "API_KEY=placeholder" }
+    },
+    "assertions": [
+      { "type": "contains", "value": "secret-guard" },
+      { "type": "contains", "value": "Warning" }
+    ]
+  },
+  {
+    "description": "Allows reading a normal file",
+    "input": {
+      "tool_name": "Bash",
+      "tool_input": { "command": "cat README.md" }
+    },
+    "assertions": [
+      { "type": "not_contains", "value": "secret-guard" }
+    ]
+  },
+  {
+    "description": "Allows reading a non-sensitive file path",
+    "input": {
+      "tool_name": "Read",
+      "tool_input": { "file_path": "/home/user/project/src/main.py" }
+    },
+    "assertions": [
+      { "type": "not_contains", "value": "secret-guard" }
+    ]
+  }
+]

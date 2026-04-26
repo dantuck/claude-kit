@@ -1,0 +1,135 @@
+{
+  "skill_name": "commit",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "I just added a user login page with email/password fields. Please write a commit message for this.",
+      "expected_output": "Should produce a feat: commit with a concise imperative description. No Co-Authored-By footer. First line under 72 chars.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "uses_feat_type",
+          "description": "Commit starts with feat:",
+          "type": "regex",
+          "pattern": "^feat(\\([^)]+\\))?:"
+        },
+        {
+          "id": "imperative_mood",
+          "description": "Description uses imperative mood (add/implement/create), not past tense",
+          "type": "not_regex",
+          "pattern": "^feat(\\([^)]+\\))?: (added|created|implemented|built)"
+        },
+        {
+          "id": "no_co_authored_by",
+          "description": "No Co-Authored-By footer",
+          "type": "not_contains",
+          "value": "Co-Authored-By"
+        },
+        {
+          "id": "no_period_at_end_of_subject",
+          "description": "Subject line does not end with a period",
+          "type": "not_regex",
+          "pattern": "^feat(\\([^)]+\\))?: .+\\.$"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "I fixed a bug where the API would crash when a null user ID was passed to the auth middleware. Write a commit message.",
+      "expected_output": "Should produce a fix: or fix(auth): commit. Imperative description. No attribution footer.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "uses_fix_type",
+          "description": "Commit starts with fix:",
+          "type": "regex",
+          "pattern": "^fix(\\([^)]+\\))?:"
+        },
+        {
+          "id": "mentions_null_or_auth",
+          "description": "Description references the null case or auth context",
+          "type": "regex",
+          "pattern": "(?i)(null|auth|crash|undefined)"
+        },
+        {
+          "id": "no_co_authored_by",
+          "description": "No Co-Authored-By footer",
+          "type": "not_contains",
+          "value": "Co-Authored-By"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I renamed the API's /users endpoint to /accounts and changed the response format. Existing clients will break. Write a commit message.",
+      "expected_output": "Should use feat! or include BREAKING CHANGE footer. Must not omit the breaking change indicator.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "marks_breaking_change",
+          "description": "Uses ! after type/scope or includes BREAKING CHANGE footer",
+          "type": "regex",
+          "pattern": "(?s)(^[a-z]+(\\([^)]+\\))?!:|BREAKING CHANGE:)"
+        },
+        {
+          "id": "no_co_authored_by",
+          "description": "No Co-Authored-By footer",
+          "type": "not_contains",
+          "value": "Co-Authored-By"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I updated the README to add a section on environment variables. Commit message please.",
+      "expected_output": "Should use docs: type with a concise description.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "uses_docs_type",
+          "description": "Commit uses docs: type",
+          "type": "regex",
+          "pattern": "^docs(\\([^)]+\\))?:"
+        },
+        {
+          "id": "no_co_authored_by",
+          "description": "No Co-Authored-By footer",
+          "type": "not_contains",
+          "value": "Co-Authored-By"
+        },
+        {
+          "id": "first_letter_lowercase",
+          "description": "Description starts with lowercase letter",
+          "type": "regex",
+          "pattern": "^docs(\\([^)]+\\))?: [a-z]"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I just upgraded all npm dependencies to their latest versions. Nothing in the source code changed. Commit message?",
+      "expected_output": "Should use chore(deps): or build(deps): type. Not feat or fix.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "uses_appropriate_type",
+          "description": "Uses chore or build type, not feat or fix",
+          "type": "regex",
+          "pattern": "^(chore|build)(\\([^)]+\\))?:"
+        },
+        {
+          "id": "no_feat_or_fix",
+          "description": "Does not misclassify as feat or fix",
+          "type": "not_regex",
+          "pattern": "^(feat|fix)(\\([^)]+\\))?:"
+        },
+        {
+          "id": "no_co_authored_by",
+          "description": "No Co-Authored-By footer",
+          "type": "not_contains",
+          "value": "Co-Authored-By"
+        }
+      ]
+    }
+  ]
+}

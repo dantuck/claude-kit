@@ -1,0 +1,95 @@
+{
+  "skill_name": "wt-workflow",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "I'm about to start working on a new feature for our Rails app — user notifications. I want to keep main clean. What should I do? I use fish shell.",
+      "expected_output": "Should check/install wt if not present (fish-specific install), then guide through `wt feature/user-notifications main` (or similar branch name), explain the worktree will be at ~/.wt/<project>/<branch>, mention .worktreekeep for .env files if relevant.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "mentions_wt_tool",
+          "description": "Response names the `wt` command as the solution, not just plain git",
+          "type": "contains",
+          "value": "wt"
+        },
+        {
+          "id": "fish_install_command",
+          "description": "Includes the fish-specific install path or curl command for fish shell",
+          "type": "contains_any",
+          "values": ["fish/conf.d/wt.fish", "wt.fish", "fish shell"]
+        },
+        {
+          "id": "shows_wt_create_command",
+          "description": "Shows a concrete `wt <branch>` command to create the worktree",
+          "type": "regex",
+          "pattern": "wt\\s+[a-z/\\-_]+"
+        },
+        {
+          "id": "no_raw_git_worktree_add",
+          "description": "Doesn't fall back to raw `git worktree add` as the primary recommendation when wt is the tool",
+          "type": "not_contains",
+          "value": "git worktree add"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "I've been editing some files in my repo trying to figure out a bug, nothing committed yet. But now I need to drop everything and fix a critical production issue. I don't want to lose my debug changes.",
+      "expected_output": "Should recommend `wt -w fix/critical-issue` (or similar), explaining that -w carries the unstaged changes to the new worktree safely, and they can return to the debug changes later via `wt switch`.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "mentions_wt_w_flag",
+          "description": "Surfaces the `-w` / `--with-changes` flag as the primary solution",
+          "type": "contains_any",
+          "values": ["-w", "--with-changes"]
+        },
+        {
+          "id": "explains_stash_behavior",
+          "description": "Explains what -w does: stashes current changes and applies them in the new worktree",
+          "type": "contains_any",
+          "values": ["stash", "unstaged changes", "moves", "carries", "apply"]
+        },
+        {
+          "id": "mentions_switch_to_return",
+          "description": "Mentions how to return to the debug changes (wt switch or the worktree path)",
+          "type": "contains_any",
+          "values": ["wt switch", "switch back", "return to", "~/.wt/"]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My feature branch got merged into main yesterday. I have the worktree at ~/.wt/myapp/feature-payments. Also I notice I have like 5 other worktrees sitting around from old branches. How do I clean all this up?",
+      "expected_output": "Should guide through `wt remove -d feature-payments` for the merged branch, then `wt prune` for branches gone from remote, and `wt review` to audit all worktrees across projects with status indicators.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "mentions_remove_d",
+          "description": "Mentions `wt remove -d` to delete worktree and branch together",
+          "type": "contains_any",
+          "values": ["wt remove -d", "wt remove --delete-branch", "-d feature-payments"]
+        },
+        {
+          "id": "mentions_prune",
+          "description": "Mentions `wt prune` for cleaning up gone remote branches",
+          "type": "contains",
+          "value": "wt prune"
+        },
+        {
+          "id": "mentions_review",
+          "description": "Mentions `wt review` for auditing all worktrees across projects",
+          "type": "contains",
+          "value": "wt review"
+        },
+        {
+          "id": "explains_review_statuses",
+          "description": "Explains what wt review shows: merged/closed, orphaned, has changes, etc.",
+          "type": "contains_any",
+          "values": ["Merged", "Orphaned", "merged", "orphaned", "⊘", "✗", "status"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "secret-guard",
+  "description": "Blocks reading secret files, dumping environment variables, and warns on writing to credential paths",
+  "version": "1.0.0",
+  "author": {
+    "name": "dantuck"
+  },
+  "homepage": "https://github.com/dantuck/claude-kit",
+  "repository": "https://github.com/dantuck/claude-kit",
+  "license": "MIT",
+  "keywords": [
+    "security",
+    "secrets",
+    "hooks"
+  ]
+}

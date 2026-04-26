@@ -1,0 +1,56 @@
+{
+  "name": "claude-kit",
+  "metadata": {
+    "description": "Personal Claude Code plugin collection"
+  },
+  "owner": {
+    "name": "dantuck",
+    "homepage": "https://github.com/dantuck"
+  },
+  "plugins": [
+    {
+      "name": "secret-guard",
+      "description": "Blocks reading secret files (.env, *.pem, *.key, credentials), dumping environment variables, and warns on writing to credential paths",
+      "version": "1.0.0",
+      "category": "security",
+      "source": "./hooks/secret-guard",
+      "author": {
+        "name": "dantuck"
+      },
+      "homepage": "https://github.com/dantuck/claude-kit"
+    },
+    {
+      "name": "wt-workflow",
+      "description": "Skill for the wt git worktree CLI — covers installation, the core workflow (wt switch, wt update, wt remove, wt prune, wt review, wt -w), and .worktreekeep config",
+      "version": "1.0.0",
+      "category": "productivity",
+      "source": "./skills/wt-workflow",
+      "author": {
+        "name": "dantuck"
+      },
+      "homepage": "https://github.com/dantuck/claude-kit"
+    },
+    {
+      "name": "conventional-commits",
+      "description": "Enforces Conventional Commits v1.0.0 formatting for all git commit messages — structured types, scopes, breaking change notation, and no AI attribution footers",
+      "version": "1.0.0",
+      "category": "productivity",
+      "source": "./skills/conventional-commits",
+      "author": {
+        "name": "dantuck"
+      },
+      "homepage": "https://github.com/dantuck/claude-kit"
+    },
+    {
+      "name": "add-plugin",
+      "description": "Scaffolds and registers a new plugin in the claude-kit personal marketplace",
+      "version": "1.0.0",
+      "category": "productivity",
+      "source": "./skills/add-plugin",
+      "author": {
+        "name": "dantuck"
+      },
+      "homepage": "https://github.com/dantuck/claude-kit"
+    }
+  ]
+}
