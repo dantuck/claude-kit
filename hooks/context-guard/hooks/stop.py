@@ -88,9 +88,12 @@ def main() -> int:
         "CLAUDE_CONFIG_DIR", os.path.expanduser("~/.claude")
     )
 
-    warn_pct = int(os.environ.get("CONTEXT_GUARD_WARN_PCT", "80"))
-    urgent_pct = int(os.environ.get("CONTEXT_GUARD_URGENT_PCT", "95"))
-    window_tokens = int(os.environ.get("CONTEXT_GUARD_WINDOW", "200000"))
+    try:
+        warn_pct = int(os.environ.get("CONTEXT_GUARD_WARN_PCT", "80"))
+        urgent_pct = int(os.environ.get("CONTEXT_GUARD_URGENT_PCT", "95"))
+        window_tokens = int(os.environ.get("CONTEXT_GUARD_WINDOW", "200000"))
+    except ValueError:
+        return 0  # bad env var — fail open
 
     if not session_id:
         return 0
