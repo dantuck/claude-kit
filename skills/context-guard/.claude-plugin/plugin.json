@@ -1,7 +1,7 @@
 {
   "name": "context-guard",
-  "description": "Monitors context window usage and forces compaction at configurable thresholds to prevent silent context loss in long sessions and multi-agent orchestrations",
-  "version": "1.0.0",
+  "description": "Monitors context window usage and automatically runs /compact at configurable thresholds — injects a standing compact rule at session start and forces re-engagement via Stop hook when context nears capacity",
+  "version": "1.1.0",
   "author": {
     "name": "dantuck"
   },

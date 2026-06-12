@@ -10,7 +10,7 @@ A personal Claude Code plugin marketplace. Marketplace ID: `claude-kit`.
 | [wt-workflow](skills/wt-workflow) | skill | productivity | Skill for the `wt` git worktree CLI — all subcommands and the core workflow |
 | [add-plugin](skills/add-plugin) | skill | productivity | Scaffolds and registers new plugins in this marketplace |
 | [secret-guard](hooks/secret-guard) | hook | security | Blocks reading secret files, env var dumps, and warns on writing credentials |
-| [context-guard](hooks/context-guard) | hook | productivity | Monitors context window usage and warns / blocks at configurable thresholds to prevent silent context loss |
+| [context-guard](skills/context-guard) | skill | productivity | Monitors context window usage — injects compact rule at session start, forces /compact via Stop hook at 80%/95% |
 
 ---
 
@@ -119,13 +119,14 @@ claude plugin install secret-guard@claude-kit --scope user
 
 ### context-guard
 
-A hook plugin that fires on every `Stop` event to estimate context window usage and alert before silent context loss occurs.
+A skill+hook plugin that closes the loop on context management: a `SessionStart` hook injects a standing compact rule at the start of every session, and a `Stop` hook detects when context nears capacity and forces Claude to act on it.
 
 | Usage | Action |
 |-------|--------|
+| Session start | Compact rule injected — Claude knows to run `/compact` on warning |
 | Below warn threshold (default 80%) | Silent |
-| At or above warn threshold | Exit 2 with compaction warning |
-| At or above urgent threshold (default 95%) | Exit 2 with URGENT compaction message |
+| At or above warn threshold | Exit 2 — Claude runs `/compact` before continuing |
+| At or above urgent threshold (default 95%) | Exit 2 — Claude runs `/compact` immediately, no subagents first |
 
 Configurable via environment variables: `CONTEXT_GUARD_WARN_PCT`, `CONTEXT_GUARD_URGENT_PCT`, `CONTEXT_GUARD_WINDOW`, `CONTEXT_GUARD_DISABLE`.
 
