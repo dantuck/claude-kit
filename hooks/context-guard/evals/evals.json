@@ -1,0 +1,64 @@
+{
+  "evals": [
+    {
+      "id": "happy-path-warns-at-85pct",
+      "description": "context-guard warns when context is ~85% full",
+      "prompt": "The Stop hook fires for a session that is 85% full. What should context-guard do?",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "context-guard"
+        },
+        {
+          "type": "contains_any",
+          "values": ["warn", "compact", "context window"]
+        }
+      ]
+    },
+    {
+      "id": "edge-case-urgent-at-97pct",
+      "description": "context-guard escalates to URGENT above the urgent threshold",
+      "prompt": "The Stop hook fires for a session that is 97% full. What message should context-guard produce?",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "URGENT"
+        },
+        {
+          "type": "contains",
+          "value": "context-guard"
+        }
+      ]
+    },
+    {
+      "id": "negative-silent-under-threshold",
+      "description": "context-guard is silent when context is well under the warn threshold",
+      "prompt": "The Stop hook fires for a session that is only 40% full. Should context-guard produce any output?",
+      "assertions": [
+        {
+          "type": "not_contains",
+          "value": "URGENT"
+        },
+        {
+          "type": "not_contains",
+          "value": "compact now"
+        }
+      ]
+    },
+    {
+      "id": "edge-case-disabled-env",
+      "description": "context-guard respects CONTEXT_GUARD_DISABLE=1 and stays silent",
+      "prompt": "CONTEXT_GUARD_DISABLE is set to 1. The session is 99% full. What does context-guard output?",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "values": ["nothing", "silent", "disabled", "no output"]
+        },
+        {
+          "type": "not_contains",
+          "value": "URGENT"
+        }
+      ]
+    }
+  ]
+}

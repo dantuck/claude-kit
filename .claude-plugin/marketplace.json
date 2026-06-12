@@ -51,6 +51,17 @@
         "name": "dantuck"
       },
       "homepage": "https://github.com/dantuck/claude-kit"
+    },
+    {
+      "name": "context-guard",
+      "description": "Monitors context window usage and forces compaction at configurable thresholds to prevent silent context loss in long sessions and multi-agent orchestrations",
+      "version": "1.0.0",
+      "category": "productivity",
+      "source": "./hooks/context-guard",
+      "author": {
+        "name": "dantuck"
+      },
+      "homepage": "https://github.com/dantuck/claude-kit"
     }
   ]
 }

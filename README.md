@@ -10,6 +10,7 @@ A personal Claude Code plugin marketplace. Marketplace ID: `claude-kit`.
 | [wt-workflow](skills/wt-workflow) | skill | productivity | Skill for the `wt` git worktree CLI — all subcommands and the core workflow |
 | [add-plugin](skills/add-plugin) | skill | productivity | Scaffolds and registers new plugins in this marketplace |
 | [secret-guard](hooks/secret-guard) | hook | security | Blocks reading secret files, env var dumps, and warns on writing credentials |
+| [context-guard](hooks/context-guard) | hook | productivity | Monitors context window usage and warns / blocks at configurable thresholds to prevent silent context loss |
 
 ---
 
@@ -45,6 +46,7 @@ claude plugin install conventional-commits@claude-kit --scope user
 claude plugin install wt-workflow@claude-kit --scope user
 claude plugin install add-plugin@claude-kit --scope user
 claude plugin install secret-guard@claude-kit --scope user
+claude plugin install context-guard@claude-kit --scope user
 ```
 
 ### 3. Verify installation
@@ -113,6 +115,22 @@ Detected patterns: `.env*`, `*.pem`, `*.key`, `*.p12`, `*.pfx`, `*.jks`, `*.ppk`
 
 ```bash
 claude plugin install secret-guard@claude-kit --scope user
+```
+
+### context-guard
+
+A hook plugin that fires on every `Stop` event to estimate context window usage and alert before silent context loss occurs.
+
+| Usage | Action |
+|-------|--------|
+| Below warn threshold (default 80%) | Silent |
+| At or above warn threshold | Exit 2 with compaction warning |
+| At or above urgent threshold (default 95%) | Exit 2 with URGENT compaction message |
+
+Configurable via environment variables: `CONTEXT_GUARD_WARN_PCT`, `CONTEXT_GUARD_URGENT_PCT`, `CONTEXT_GUARD_WINDOW`, `CONTEXT_GUARD_DISABLE`.
+
+```bash
+claude plugin install context-guard@claude-kit --scope user
 ```
 
 ---
